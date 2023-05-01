@@ -4,17 +4,21 @@
 
 let gameBoard = (function () {
     let boardArray = [
-        "", "X", "",
-        "", "", "O",
-        "", "X", ""];
+        "", "", "",
+        "", "", "",
+        "", "", ""];
 
     // initialize and create an empty new board
     const createBoard = () => {
+        let num = 0;
         const container = document.getElementById("container");
 
         boardArray.forEach(() => {
             const space = document.createElement("div");
             space.classList.add("index");
+            space.dataset.index = num;
+            num++;
+
             container.appendChild(space);
         });
 
@@ -39,7 +43,10 @@ let gameBoard = (function () {
 
     // Place sign given the index and the sign
     const placeSignonboard = (index, sign) => {
-        boardArray[index] = sign;
+        // sign can be placed if and only if current space is empty("").
+        if (boardArray[index] === "") {
+            boardArray[index] = sign;
+        }
     };
 
     return {
@@ -48,10 +55,59 @@ let gameBoard = (function () {
 
 })();
 
-// Game 
+// Main funtion to execute Game 
+
+let execGame = () => {
+
+    let playerSign = "";
+
+    // Add event listener to each button -> playerSign stores currently selected button.
+    const getPlayerSign = () => {
+        const curPlayer = document.querySelectorAll(".button");
+
+        curPlayer.forEach((button) => {
+            button.addEventListener("click", () => {
+                playerSign = button.dataset.sign;
+            });
+        });
+
+    };
+
+
+    // A sign can only be placed once in the gameBoard.
+    // can't press other sign button once pressed.
+
+    // add css color for disabled, enabled.
+
+    // Once sign is selected, add new sign in  boardArray, then print board. 
+
+    // need to add algorithm for checking for 3 in a row/column/diagonal
+
+    const playerTurn = () => {
+
+        getPlayerSign();
+
+        const spaces = document.querySelectorAll(".index");
+        spaces.forEach((space) => {
+            space.addEventListener("click", () => {
+                gameBoard.placeSignonboard(space.dataset.index, playerSign);
+                gameBoard.printBoard();
+            });
+        });
+
+    };
+
+    // ---------------- game starts at this point -----------------
+
+    // initialize gameboard
+    gameBoard.createBoard();
+
+    playerTurn();
 
 
 
+
+};
 
 // Player Factory Functions 
 
@@ -75,10 +131,7 @@ const Player = (name, playerSign) => {
 
 };
 
-gameBoard.createBoard();
-gameBoard.printBoard();
-gameBoard.clearBoard();
-gameBoard.printBoard();
+execGame();
 
 
 
