@@ -454,13 +454,16 @@ body{
 }
 
 .turnButtons>button{
+  border-radius: 1em;
   width: 100%;
+  font-size: 1.5em;
 }
 
-.enabled{
-  background-color: green;
-} 
+button:hover{
+  background-color: rgba(18, 121, 18, 0.558);
+}
 
-.disabled{
-  background-color: red;
+:disabled{
+  visibility: hidden;
+  background-color: rgba(180, 16, 16, 0.459);
 }

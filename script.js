@@ -43,9 +43,18 @@ let gameBoard = (function () {
 
     // Place sign given the index and the sign
     const placeSignonboard = (index, sign) => {
+        button_O = document.querySelector(".button_O");
+        button_X = document.querySelector(".button_X");
         // sign can be placed if and only if current space is empty("").
         if (boardArray[index] === "") {
-            boardArray[index] = sign;
+            // sign can be placed if and only if button is not disabled
+            if (sign == "O" && button_O.disabled == false) {
+                boardArray[index] = sign;
+            }
+            if (sign == "X" && button_X.disabled == false) {
+                boardArray[index] = sign;
+            }
+
         }
     };
 
@@ -61,43 +70,41 @@ let gameFunction = (function () {
 
     // Add event listener to each button -> playerSign stores currently selected button.
     const getPlayerSign = () => {
-        const curPlayer = document.querySelectorAll(".button");
-
+        const curPlayer = document.querySelectorAll("button");
         curPlayer.forEach((button) => {
             button.addEventListener("click", () => {
                 playerSign = button.dataset.sign;
-                button.classList.add("enabled");
             });
         });
 
     };
 
     const nextTurn = (sign) => {
-        const curPlayer = document.querySelector(".enabled");
-        const nextPlayer = document.querySelector(".disabled");
 
-        console.log(curPlayer);
-        console.log(nextPlayer);
+        let curPlayer, nextPlayer;
 
-        // if current sign is O, 
-        // disable O, enable X
-        if (curPlayer.dataset.sign == "O") {
-            console.log("O");
-            curPlayer.classList.remove("enabled");
-            curPlayer.classList.add("disabled");
-            // nextPlayer.classList.add("enabled");
+        console.log(sign);
+
+        // disable the button that that sign just used.
+        if (sign == "O") {
+            curPlayer = document.querySelector(".button_O");
+            nextPlayer = document.querySelector(".button_X");
+
+            curPlayer.disabled = true;
+            nextPlayer.disabled = false;
         }
-        // if current sign is X
         else {
-            console.log("X");
-            curPlayer.classList.remove("enabled");
-            curPlayer.classList.add("disabled");
-            // nextPlayer.classList.add("enabled");
+            curPlayer = document.querySelector(".button_X");
+            nextPlayer = document.querySelector(".button_O");
+
+            curPlayer.disabled = true;
+            nextPlayer.disabled = false;
+
         }
+
+        // let the sign equal to the opposite sign
+
     };
-
-
-
 
 
     // A sign can only be placed once in the gameBoard.
@@ -105,14 +112,13 @@ let gameFunction = (function () {
 
     // add css color for disabled, enabled.
 
-    // Once sign is selected, add new sign in  boardArray, then print board. 
+    // Once sign is selected, add new sign in boardArray, then print board. 
 
     // need to add algorithm for checking for 3 in a row/column/diagonal
 
     const playerTurn = () => {
 
         getPlayerSign();
-
 
         const spaces = document.querySelectorAll(".index");
         spaces.forEach((space) => {
@@ -135,15 +141,10 @@ let gameFunction = (function () {
 // Main funtion to execute Game 
 
 let execGame = () => {
-
-
-
     // ---------------- game starts at this point -----------------
 
     // initialize gameboard
     gameBoard.createBoard();
-
-    gameFunction.getPlayerSign();
     gameFunction.playerTurn();
 
 
@@ -174,6 +175,7 @@ const Player = (name, playerSign) => {
 };
 
 execGame();
+
 
 
 
