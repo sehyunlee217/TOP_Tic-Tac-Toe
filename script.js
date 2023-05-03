@@ -55,9 +55,7 @@ let gameBoard = (function () {
 
 })();
 
-// Main funtion to execute Game 
-
-let execGame = () => {
+let gameFunction = (function () {
 
     let playerSign = "";
 
@@ -68,10 +66,38 @@ let execGame = () => {
         curPlayer.forEach((button) => {
             button.addEventListener("click", () => {
                 playerSign = button.dataset.sign;
+                button.classList.add("enabled");
             });
         });
 
     };
+
+    const nextTurn = (sign) => {
+        const curPlayer = document.querySelector(".enabled");
+        const nextPlayer = document.querySelector(".disabled");
+
+        console.log(curPlayer);
+        console.log(nextPlayer);
+
+        // if current sign is O, 
+        // disable O, enable X
+        if (curPlayer.dataset.sign == "O") {
+            console.log("O");
+            curPlayer.classList.remove("enabled");
+            curPlayer.classList.add("disabled");
+            // nextPlayer.classList.add("enabled");
+        }
+        // if current sign is X
+        else {
+            console.log("X");
+            curPlayer.classList.remove("enabled");
+            curPlayer.classList.add("disabled");
+            // nextPlayer.classList.add("enabled");
+        }
+    };
+
+
+
 
 
     // A sign can only be placed once in the gameBoard.
@@ -87,22 +113,38 @@ let execGame = () => {
 
         getPlayerSign();
 
+
         const spaces = document.querySelectorAll(".index");
         spaces.forEach((space) => {
             space.addEventListener("click", () => {
                 gameBoard.placeSignonboard(space.dataset.index, playerSign);
                 gameBoard.printBoard();
+                nextTurn(playerSign);
             });
         });
 
     };
+
+    return {
+        getPlayerSign, playerTurn
+    };
+
+}
+)();
+
+// Main funtion to execute Game 
+
+let execGame = () => {
+
+
 
     // ---------------- game starts at this point -----------------
 
     // initialize gameboard
     gameBoard.createBoard();
 
-    playerTurn();
+    gameFunction.getPlayerSign();
+    gameFunction.playerTurn();
 
 
 

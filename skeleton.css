@@ -456,3 +456,11 @@ body{
 .turnButtons>button{
   width: 100%;
 }
+
+.enabled{
+  background-color: green;
+} 
+
+.disabled{
+  background-color: red;
+}
