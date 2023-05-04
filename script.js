@@ -45,18 +45,78 @@ let gameBoard = (function () {
     const placeSignonboard = (index, sign) => {
         button_O = document.querySelector(".button_O");
         button_X = document.querySelector(".button_X");
-        // sign can be placed if and only if current space is empty("").
-        if (boardArray[index] === "") {
-            // sign can be placed if and only if button is not disabled
-            if (sign == "O" && button_O.disabled == false) {
-                boardArray[index] = sign;
-            }
-            if (sign == "X" && button_X.disabled == false) {
-                boardArray[index] = sign;
-            }
 
+        let WinnerExists = checkforWinner(boardArray);
+
+        // if there is no winner yet,
+        if (WinnerExists == false) {
+            // sign can be placed if and only if current space is empty("").
+            if (boardArray[index] === "") {
+                // sign can be placed if and only if button is not disabled
+                if (sign == "O" && button_O.disabled == false) {
+                    boardArray[index] = sign;
+                }
+                if (sign == "X" && button_X.disabled == false) {
+                    boardArray[index] = sign;
+                }
+            }
         }
+        // if there is a winner
+        else {
+            console.log("there is a winner");
+        }
+
     };
+
+    // check if all items in sliced array are equal
+    const allElementsEqual = (arr) => arr.every(e => e == arr[0]);
+
+    // check if sliced array is empty
+    const isArrayEmpty = (arr) => arr.every((e) => (e) === "");
+
+    // const checkNestedArray = (arr) => {
+    //     let result = false;
+    //     for (nestedArr in arr) {
+    //         if (!isArrayEmpty(nestedArr)) {
+    //             nestedResult = allElementsEqual(nestedArr);
+    //             if (nestedResult == true) {
+    //                 result = true;
+    //             }
+    //         }
+    //     }
+
+    //     return result;
+    // };
+
+
+
+    const checkforWinner = (boardArray) => {
+        // return sign if there is a winner
+        // check horizontal row
+        let result = false;
+
+        let row1 = boardArray.slice(0, 3);
+        let row2 = boardArray.slice(3, 6);
+        let row3 = boardArray.slice(6, 9);
+
+        let rows = [row1, row2, row3];
+
+        // result = checkNestedArray(rows);
+
+        for (const row of rows) {
+            console.log(row);
+            if (!isArrayEmpty(row)) {
+                rowCheck = allElementsEqual(row);
+                if (rowCheck == true) {
+                    result = true;
+                }
+
+            }
+        };
+
+        return result;
+    };
+
 
     return {
         createBoard, clearBoard, printBoard, placeSignonboard
@@ -83,8 +143,6 @@ let gameFunction = (function () {
 
         let curPlayer, nextPlayer;
 
-        console.log(sign);
-
         // disable the button that that sign just used.
         if (sign == "O") {
             curPlayer = document.querySelector(".button_O");
@@ -101,20 +159,7 @@ let gameFunction = (function () {
             nextPlayer.disabled = false;
 
         }
-
-        // let the sign equal to the opposite sign
-
     };
-
-
-    // A sign can only be placed once in the gameBoard.
-    // can't press other sign button once pressed.
-
-    // add css color for disabled, enabled.
-
-    // Once sign is selected, add new sign in boardArray, then print board. 
-
-    // need to add algorithm for checking for 3 in a row/column/diagonal
 
     const playerTurn = () => {
 
@@ -143,34 +188,13 @@ let gameFunction = (function () {
 let execGame = () => {
     // ---------------- game starts at this point -----------------
 
-    // initialize gameboard
+    // initialize gameboard. 
     gameBoard.createBoard();
+    // start turns if O or X is clicked. 
     gameFunction.playerTurn();
-
-
-
-
-};
-
-// Player Factory Functions 
-
-// player need name, 
-// whether the player is O or X, 
-// the number of turn right now.
-
-const Player = (name, playerSign) => {
-    // player selects an index from the gameBoard
-    // [0,1,2]
-    // [3,4,5]
-    // [6,7,8]
-
-    // apply the playetSign(X or O) to gameBoard[selectedIndex]
-
-    const placeSignOnboard = (selectedIndex) => {
-        gameBoard.placeSignonboard(selectedIndex, playerSign);
-    };
-
-    return { placeSignOnboard };
+    // check if someone won the game
+    // pop up rematch button, and clear board + display board
+    // console.log("hi");
 
 };
 
@@ -189,25 +213,5 @@ execGame();
 
 
 
-
-
-
-
-// const addSign = (sign, space) => {
-//     console.log(space.dataset.space);
-
-//     const signElement = document.createElement("div");
-//     signElement.textContent = sign;
-
-//     space.appendChild(signElement);
-
-// };
-
-// const spaces = document.querySelectorAll(".index");
-// // console.log(spaces);
-
-// spaces.forEach((space) => {
-//     space.addEventListener("click", () => gameBoard.placeSignonboard(1, "X"));
-// });
 
 
