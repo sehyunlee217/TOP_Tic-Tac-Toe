@@ -63,7 +63,8 @@ let gameBoard = (function () {
         }
         // if there is a winner
         else {
-            console.log("there is a winner");
+            // end game function
+            // *****************
         }
 
     };
@@ -74,46 +75,36 @@ let gameBoard = (function () {
     // check if sliced array is empty
     const isArrayEmpty = (arr) => arr.every((e) => (e) === "");
 
-    // const checkNestedArray = (arr) => {
-    //     let result = false;
-    //     for (nestedArr in arr) {
-    //         if (!isArrayEmpty(nestedArr)) {
-    //             nestedResult = allElementsEqual(nestedArr);
-    //             if (nestedResult == true) {
-    //                 result = true;
-    //             }
-    //         }
-    //     }
-
-    //     return result;
-    // };
-
-
-
     const checkforWinner = (boardArray) => {
         // return sign if there is a winner
         // check horizontal row
         let result = false;
 
+        // set array for each row, column, diagonal combinations 
+
         let row1 = boardArray.slice(0, 3);
         let row2 = boardArray.slice(3, 6);
         let row3 = boardArray.slice(6, 9);
 
-        let rows = [row1, row2, row3];
+        let col1 = [].concat(boardArray[0], boardArray[3], boardArray[6]);
+        let col2 = [].concat(boardArray[1], boardArray[4], boardArray[7]);
+        let col3 = [].concat(boardArray[2], boardArray[5], boardArray[8]);
 
-        // result = checkNestedArray(rows);
+        let diag1 = [].concat(boardArray[0], boardArray[4], boardArray[8]);
+        let diag2 = [].concat(boardArray[2], boardArray[4], boardArray[6]);
 
-        for (const row of rows) {
-            console.log(row);
-            if (!isArrayEmpty(row)) {
-                rowCheck = allElementsEqual(row);
-                if (rowCheck == true) {
+        let arrs = [row1, row2, row3, col1, col2, col3, diag1, diag2];
+
+        // go through each array that could win the game
+        for (const arr of arrs) {
+            if (!isArrayEmpty(arr)) {
+                arrCheck = allElementsEqual(arr);
+                if (arrCheck == true) {
                     result = true;
                 }
 
             }
         };
-
         return result;
     };
 
@@ -194,7 +185,6 @@ let execGame = () => {
     gameFunction.playerTurn();
     // check if someone won the game
     // pop up rematch button, and clear board + display board
-    // console.log("hi");
 
 };
 
