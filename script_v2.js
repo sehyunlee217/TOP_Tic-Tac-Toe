@@ -8,6 +8,8 @@ let gameBoard = (function () {
         "", "", "",
         "", "", ""];
 
+    let winningSign;
+
     // initialize and create an empty new board
     const createBoard = () => {
         const container = document.getElementById("container");
@@ -18,7 +20,6 @@ let gameBoard = (function () {
             space.dataset.index = index;
             container.appendChild(space);
         });
-
     };
 
     const clearBoard = () => {
@@ -27,47 +28,85 @@ let gameBoard = (function () {
         });
     };
 
+    const clearMsg = () => {
+        const msgLoc = document.querySelector("#msg");
+        msgLoc.replaceChildren();
+    };
+
     // print boardArray to html
     const printBoard = () => {
         const displayBoard = document.querySelectorAll(".index");
         displayBoard.forEach((space, i) => {
             space.textContent = boardArray[i];
         });
+    };
 
+    const disableBtns = () => {
+        btns = document.querySelector(".turnButtons");
+        btns.style.visibility = "hidden";
+    };
+
+    const enableBtns = () => {
+        btns = document.querySelector(".turnButtons");
+        btns.style.visibility = "visible";
+
+        button_O = document.querySelector(".button_O");
+        button_X = document.querySelector(".button_X");
+
+        button_O.disabled = button_X.disabled = false;
+    };
+
+    // create reset button 
+    const createReset = () => {
+        but1 = document.querySelector(".button_O");
+        but2 = document.querySelector(".button_X");
+
+        const resetBtn = document.createElement("button");
+
+        resetBtn.classList.add("button_reset");
+        resetBtn.textContent = "Reset";
+
+        const btnLoc = document.querySelector("#msg");
+        btnLoc.appendChild(resetBtn);
+
+        resetBtn.addEventListener("click", () => {
+            clearBoard();
+            clearMsg();
+            printBoard();
+            enableBtns();
+            gameFunction.gameMsg("Tic Tac Toe");
+        });
     };
 
     // Place sign given the index and the sign
     const placeSignonboard = (index, sign) => {
         button_O = document.querySelector(".button_O");
         button_X = document.querySelector(".button_X");
-
-        let WinnerExists = checkforWinner(boardArray);
-
-        // if there is no winner yet,
-        if (WinnerExists == false) {
-            // sign can be placed if and only if current space is empty("").
-            if (boardArray[index] === "") {
-                // sign can be placed if and only if button is not disabled
-                if (sign == "O" && button_O.disabled == false) {
-                    boardArray[index] = sign;
-                }
-                if (sign == "X" && button_X.disabled == false) {
-                    boardArray[index] = sign;
-                }
+        // sign can be placed if and only if current space is empty("").
+        if (boardArray[index] === "") {
+            // sign can be placed if and only if button is not disabled
+            if (sign == "O" && button_O.disabled == false) {
+                boardArray[index] = sign;
+            }
+            if (sign == "X" && button_X.disabled == false) {
+                boardArray[index] = sign;
             }
         }
-        // if there is a winner
-        else {
-            clearBoard();
 
-            gameFunction.gameMsg("Game Over");
+        // if game is over
+        if (checkforWinner(boardArray) == true) {
+            clearMsg();
+            gameFunction.gameMsg(`'${ winningSign }' Wins!`);
+            disableBtns();
+            createReset();
 
-            // end game function
-            // *************
-            // restart button
-            // game tie when all array is full / turn goes to 9 
-            // game message
-            // stretch button when changed? 
+        }
+        // if game is tied
+        if (!boardArray.includes("")) {
+            clearMsg();
+            gameFunction.gameMsg("It's a Tie!");
+            disableBtns();
+            createReset();
         }
 
     };
@@ -101,6 +140,7 @@ let gameBoard = (function () {
                 arrCheck = allElementsEqual(arr);
                 if (arrCheck == true) {
                     result = true;
+                    winningSign = arr[0];
                 }
             }
         };
@@ -120,7 +160,6 @@ let gameFunction = (function () {
         curPlayer.forEach((button) => {
             button.addEventListener("click", () => {
                 playerSign = button.dataset.sign;
-                console.log(playerSign);
             });
         });
     };
@@ -174,9 +213,6 @@ let execGame = () => {
     // ---------------- game starts at this point -----------------
     // initialize gameboard. 
     gameBoard.createBoard();
-
-    gameFunction.gameMsg();
-
     // start turns if O or X is clicked. 
     gameFunction.playerTurn();
     // check if someone won the game

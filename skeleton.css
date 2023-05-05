@@ -445,15 +445,21 @@ body{
   justify-content: center;
   align-items: center;
   border: 1px solid black;
-  font-size: 2em;
+  font-size: 4em;
 }
 
-.turnButtons{
+.index:hover{
+  background-color: rgba(128, 128, 128, 0.264);
+}
+
+.turnButtons,.button_reset{
   display: flex;
   gap: 1em;
 }
 
-.turnButtons>button{
+.turnButtons>button, .button_reset{
+  display: flex;
+  justify-content: center;
   border-radius: 1em;
   width: 100%;
   font-size: 1.5em;
