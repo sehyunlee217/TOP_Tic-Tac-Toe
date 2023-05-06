@@ -80,6 +80,7 @@ let gameBoard = (function () {
 
     // Place sign given the index and the sign
     const placeSignonboard = (index, sign) => {
+
         button_O = document.querySelector(".button_O");
         button_X = document.querySelector(".button_X");
         // sign can be placed if and only if current space is empty("").
@@ -148,7 +149,7 @@ let gameBoard = (function () {
     };
 
     return {
-        createBoard, clearBoard, printBoard, placeSignonboard
+        boardArray, createBoard, clearBoard, printBoard, placeSignonboard
     };
 })();
 
@@ -164,7 +165,7 @@ let gameFunction = (function () {
         });
     };
 
-    const nextTurn = (sign) => {
+    const nextTurn = (index, sign) => {
         let curPlayer, nextPlayer;
         // disable the button that that sign just used.
         if (sign == "O") {
@@ -186,9 +187,11 @@ let gameFunction = (function () {
         const spaces = document.querySelectorAll(".index");
         spaces.forEach((space) => {
             space.addEventListener("click", () => {
-                gameBoard.placeSignonboard(space.dataset.index, playerSign);
-                gameBoard.printBoard();
-                nextTurn(playerSign);
+                if (gameBoard.boardArray[space.dataset.index] == "") {
+                    gameBoard.placeSignonboard(space.dataset.index, playerSign);
+                    gameBoard.printBoard();
+                    nextTurn(space.dataset.index, playerSign);
+                }
             });
         });
     };

@@ -457,6 +457,11 @@ body{
   gap: 1em;
 }
 
+.turnButtons{
+  background-color: rgba(18, 121, 18, 0.558);
+  border-radius: 1.5rem;
+}
+
 .turnButtons>button, .button_reset{
   display: flex;
   justify-content: center;
@@ -465,11 +470,18 @@ body{
   font-size: 1.5em;
 }
 
+.turnButtons>button{
+  margin: 0;
+  border: 3px solid rgba(18, 121, 18, 0.558);
+  border-radius: 1.5rem;
+  background-color: white;
+  font-size: 2em;
+}
+
 button:hover{
   background-color: rgba(18, 121, 18, 0.558);
 }
 
 :disabled{
   visibility: hidden;
-  background-color: rgba(180, 16, 16, 0.459);
 }
