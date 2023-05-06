@@ -102,14 +102,15 @@ let gameBoard = (function () {
             createReset();
 
         }
-        // if game is tied
-        if (!boardArray.includes("")) {
-            clearMsg();
-            gameFunction.gameMsg("It's a Tie!");
-            disableBtns();
-            createReset();
+        else {
+            // if game is tied
+            if (!boardArray.includes("")) {
+                clearMsg();
+                gameFunction.gameMsg("It's a Tie!");
+                disableBtns();
+                createReset();
+            }
         }
-
     };
 
     // check if all items in sliced array are equal
